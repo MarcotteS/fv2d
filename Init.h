@@ -218,6 +218,7 @@ enum InitType {
   H84,
   C91,
   KELVIN_HELMHOLTZ
+  B02
 };
 
 struct InitFunctor {
