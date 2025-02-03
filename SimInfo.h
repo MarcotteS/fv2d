@@ -42,7 +42,8 @@ enum RiemannSolver {
 enum BoundaryType {
   BC_ABSORBING,
   BC_REFLECTING,
-  BC_PERIODIC
+  BC_PERIODIC,
+  BC_TRILAYER_DAMPING
 };
 
 enum TimeStepping {
@@ -53,6 +54,7 @@ enum TimeStepping {
 enum ReconstructionType {
   PCM,
   PCM_WB,
+  PCM_WB2,
   PLM
 };
 
@@ -356,7 +358,8 @@ struct DeviceParams {
     std::map<std::string, BoundaryType> bc_map{
       {"reflecting",         BC_REFLECTING},
       {"absorbing",          BC_ABSORBING},
-      {"periodic",           BC_PERIODIC}
+      {"periodic",           BC_PERIODIC},
+      {"tri_layer_damping",  BC_TRILAYER_DAMPING}
     };
     boundary_x = reader.GetMapValue(bc_map, "run", "boundaries_x", "reflecting");
     boundary_y = reader.GetMapValue(bc_map, "run", "boundaries_y", "reflecting");
@@ -364,6 +367,7 @@ struct DeviceParams {
     std::map<std::string, ReconstructionType> recons_map{
       {"pcm",    PCM},
       {"pcm_wb", PCM_WB},
+      {"pcm_wb2", PCM_WB2},
       {"plm",    PLM}
     };
     reconstruction = reader.GetMapValue(recons_map, "solvers", "reconstruction", "pcm");
@@ -405,7 +409,7 @@ struct DeviceParams {
       {"constant", TCM_CONSTANT},
       {"B02",      TCM_B02},
       {"tri_layer", TCM_C2020_TRI},
-      {"iso-three", TCM_ISO3}
+      {"iso-three", TCM_ISO3},
     };
     thermal_conductivity_mode = reader.GetMapValue(thermal_conductivity_map, "thermal_conduction", "conductivity_mode", "constant");
     kappa = reader.GetFloat("thermal_conduction", "kappa", 0.0);
