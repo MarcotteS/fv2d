@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 
       }
 
-      update.update(Q, U, dt);
+      update.update(Q, U, dt, ite);
       consToPrim(U, Q, params);
       checkNegatives(Q, params);
 
