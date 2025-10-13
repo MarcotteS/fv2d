@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include "SimInfo.h"
+#include "Gravity.h"
 
 namespace fv2d {
   namespace {
@@ -70,15 +71,16 @@ namespace fv2d {
   KOKKOS_INLINE_FUNCTION
   State fillTriLayerDamping(Array Q, int i, int j, int iref, int jref, IDir dir, const DeviceParams &params) {
     if (dir == IY && j < 0) {
+      real_t g = getGravity(i, j, dir, params);
       Pos pos = getPos(params, i, j);
       const real_t T0 = params.iso3_T0;
-      const real_t rho0 = params.iso3_rho0 * exp(-params.iso3_dy0 * params.g / T0);
+      const real_t rho0 = params.iso3_rho0 * exp(-params.iso3_dy0 * g / T0);
       const real_t p0 = rho0*T0;
       const real_t d = pos[IY];
 
       // Top layer (iso-thermal)
       real_t rho, p;
-      p   = p0 * exp(params.g * d / T0);
+      p   = p0 * exp(g * d / T0);
       rho = p / T0;
 
       State q;

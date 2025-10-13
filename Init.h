@@ -324,9 +324,10 @@ namespace {
     const real_t T1   = params.iso3_T0;
     const real_t rho1   = params.iso3_rho0;
     const real_t p1 = rho1 * T1;
+    const real_t g = getGravity(i, j, IY, params);
 
     const real_t T0 = T1;
-    const real_t rho0 = rho1 * exp(-params.iso3_dy0 * params.g / T0);
+    const real_t rho0 = rho1 * exp(-params.iso3_dy0 * g / T0);
     const real_t p0 = rho0 * T0;
 
     const real_t T2   = T1 + params.iso3_theta1 * params.iso3_dy1;
@@ -343,7 +344,7 @@ namespace {
     real_t rho, p;
     real_t T;
     if (d <= y1) {
-      p   = p0 * exp(params.g * d / T0);
+      p   = p0 * exp(g * d / T0);
       rho = p / T0;
     }
     // Middle layer (convective)
@@ -389,7 +390,7 @@ enum InitType {
   DIFFUSION,
   H84,
   C91,
-  KELVIN_HELMHOLTZ
+  KELVIN_HELMHOLTZ,
   B02,
   TRI_LAYER,
   TRI_LAYER_SMOOTH,
